@@ -10,7 +10,7 @@ type Props = {
 }
 
 export const TodolistTitle = ({ todolist }: Props) => {
-  const { title, id } = todolist
+  const { title, id, entityStatus } = todolist
 
   const dispatch = useAppDispatch()
 
@@ -26,7 +26,7 @@ export const TodolistTitle = ({ todolist }: Props) => {
       <h3>
         <EditableSpan value={title} onChange={updateTodolistHandler} />
       </h3>
-      <IconButton onClick={removeTodolistHandler}>
+      <IconButton onClick={removeTodolistHandler} disabled={entityStatus === "loading"}>
         <DeleteIcon />
       </IconButton>
     </div>

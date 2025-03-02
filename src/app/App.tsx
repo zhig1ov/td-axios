@@ -1,7 +1,7 @@
 import CssBaseline from "@mui/material/CssBaseline"
 import { ThemeProvider } from "@mui/material/styles"
 import React, { useEffect } from "react"
-import { Header } from "common/components"
+import { ErrorSnackbar, Header } from "common/components"
 import { useAppDispatch, useAppSelector } from "common/hooks"
 import { getTheme } from "common/theme"
 import { selectThemeMode } from "./appSelectors"
@@ -10,6 +10,7 @@ import { fetchTodolistsThunk } from "../features/todolists/model/todolists-reduc
 
 export const App = () => {
   const themeMode = useAppSelector(selectThemeMode)
+
   const dispatch = useAppDispatch()
   useEffect(() => {
     dispatch(fetchTodolistsThunk)
@@ -20,6 +21,7 @@ export const App = () => {
       <CssBaseline />
       <Header />
       <Main />
+      <ErrorSnackbar />
     </ThemeProvider>
   )
 }
