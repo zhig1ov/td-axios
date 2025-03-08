@@ -7,6 +7,7 @@ import { getTheme } from "common/theme"
 import { selectThemeMode } from "./appSelectors"
 import { Main } from "./Main"
 import { fetchTodolistsThunk } from "../features/todolists/model/todolists-reducer"
+import { Routing } from "common/routing"
 
 export const App = () => {
   const themeMode = useAppSelector(selectThemeMode)

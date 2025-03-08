@@ -7,7 +7,7 @@ type InitialState = typeof initialState
 const initialState = {
   themeMode: "light" as ThemeMode,
   status: "idle" as RequestStatus,
-  error: "TEST ERROR MESSAGE" as string | null
+  error: null as string | null
 }
 
 export const appReducer = (state: InitialState = initialState, action: ActionsType): InitialState => {

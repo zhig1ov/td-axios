@@ -111,9 +111,16 @@ export const fetchTasksTC = (todolistId: string) => (dispatch: Dispatch) => {
 
 export const removeTaskTC = (arg: {todolistId: string, taskId: string}) => (dispatch: Dispatch) => {
   dispatch(changeAppStatusAC('loading'))
-  tasksApi.deleteTask(arg).then(() => {
-    dispatch(changeAppStatusAC('succeeded'))
-    dispatch(removeTaskAC(arg))
+  tasksApi.deleteTask(arg).then((res) => {
+      if (res.data.resultCode === ResultCode.Success) {
+        dispatch(removeTaskAC(arg))
+        dispatch(changeAppStatusAC('succeeded'))
+      } else {
+        handleServerAppError(res.data, dispatch)
+      }
+    })
+    .catch((error) => {
+    handleServerNetworkError(error,dispatch)
   })
 }
 
@@ -126,8 +133,8 @@ export const addTaskTC = (arg: {todolistId: string, title: string}) => (dispatch
     } else {
       handleServerAppError(res.data, dispatch)
     }
-  }
-  ).catch((error) => {
+  })
+    .catch((error) => {
     handleServerNetworkError(error,dispatch)
   })
 }
