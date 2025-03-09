@@ -1,12 +1,10 @@
 import { Todolist } from "../api/todolistsApi.types"
 import { Dispatch } from "redux"
-import { RootState } from "../../../app/store"
 import { todolistsApi } from "../api/todolistsApi"
 import { changeAppStatusAC, RequestStatus } from "../../../app/app-reducer"
 import { handleServerNetworkError } from "common/utils/handleServerNetworkError"
 import { ResultCode } from "common/enums"
 import { handleServerAppError } from "common/utils/handleServerAppError"
-import { removeTaskAC } from "./tasks-reducer"
 
 export type FilterValuesType = "all" | "active" | "completed"
 
@@ -49,6 +47,10 @@ export const todolistsReducer = (state: DomainTodolist[] = initialState, action:
 
     case "CHANGE-TODOLIST-ENTITY-STATUS":
       return state.map(tl => tl.id === action.payload.id ? { ...tl, entityStatus: action.payload.entityStatus } : tl)
+
+    case "CLEAR-TODOLIST-DATA":
+      return []
+
     default:
       return state
   }
@@ -79,9 +81,13 @@ export const setTodolistEntityStatusAC = (payload: {id: string, entityStatus: Re
   return { type: "CHANGE-TODOLIST-ENTITY-STATUS", payload } as const
 }
 
+export const clearTodolistData = () => {
+  return { type: "CLEAR-TODOLIST-DATA" } as const
+}
+
 // Thunk creators
 
-export const fetchTodolistsThunk = (dispatch: Dispatch, getState: () => RootState)=> {
+export const fetchTodolistsTC = (dispatch: Dispatch)=> {
   dispatch(changeAppStatusAC('loading'))
   todolistsApi.getTodolists().then((res) => {
     dispatch(changeAppStatusAC('succeeded'))
@@ -145,6 +151,7 @@ export type ChangeTodolistTitleActionType = ReturnType<typeof changeTodolistTitl
 export type ChangeTodolistFilterActionType = ReturnType<typeof changeTodolistFilterAC>
 export type SetTodolistActionType = ReturnType<typeof setTodolistsAC>
 export type SetTodolistEntityStatusActionType = ReturnType<typeof setTodolistEntityStatusAC>
+export type ClearTodolistDataActionType = ReturnType<typeof clearTodolistData>
 
 type ActionsType =
   | RemoveTodolistActionType
@@ -153,3 +160,4 @@ type ActionsType =
   | ChangeTodolistFilterActionType
   | SetTodolistActionType
   | SetTodolistEntityStatusActionType
+  | ClearTodolistDataActionType
