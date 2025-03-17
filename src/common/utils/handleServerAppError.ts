@@ -1,12 +1,12 @@
 import { BaseResponse } from "common/types"
 import { Dispatch } from "redux"
-import { setErrorAC, changeAppStatusAC } from "../../app/app-reducer"
+import {  setAppError, setAppStatus } from "../../app/app-reducer"
 
 export const handleServerAppError = <T>(data: BaseResponse<T>, dispatch: Dispatch) => {
   if (data.messages.length) {
-    dispatch(setErrorAC(data.messages[0]))
+    dispatch(setAppError({ error: data.messages[0] }))
   } else {
-    dispatch(setErrorAC("Some error occurred"))
+    dispatch(setAppError({ error: "Some error occurred" }))
   }
-  dispatch(changeAppStatusAC("failed"))
+  dispatch(setAppStatus({status: 'failed'}))
 }

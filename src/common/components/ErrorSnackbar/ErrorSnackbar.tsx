@@ -3,7 +3,7 @@ import Alert from "@mui/material/Alert"
 import Snackbar from "@mui/material/Snackbar"
 import { selectAppError } from "../../../app/appSelectors"
 import { useAppDispatch, useAppSelector } from "common/hooks"
-import { setErrorAC } from "../../../app/app-reducer"
+import { setAppError } from "../../../app/app-reducer"
 
 export const ErrorSnackbar = () => {
   const error = useAppSelector(selectAppError)
@@ -12,7 +12,7 @@ export const ErrorSnackbar = () => {
     if (reason === "clickaway") {
       return
     }
-    dispatch(setErrorAC(null))
+    dispatch(setAppError({error: null }))
   }
 
   useEffect(() => {

@@ -4,31 +4,30 @@ import IconButton from "@mui/material/IconButton"
 import Switch from "@mui/material/Switch"
 import Toolbar from "@mui/material/Toolbar"
 import React from "react"
-import { changeThemeAC } from "../../../app/app-reducer"
+import { changeTheme } from "../../../app/app-reducer"
 import { selectAppStatus, selectThemeMode } from "../../../app/appSelectors"
 import { useAppDispatch, useAppSelector } from "common/hooks"
 import { getTheme } from "common/theme"
 import { MenuButton } from "common/components"
 import { LinearProgress } from "@mui/material"
-import { selectIsLoggedIn } from "../../../features/auth/model/authSelectors"
-import { logoutTC } from "../../../features/auth/model/auth-reducer"
+import { authSlice, logout } from "../../../features/auth/model/auth-reducer"
+import { useNavigate } from "react-router"
 
 export const Header = () => {
   const dispatch = useAppDispatch()
-
+  const navigate = useNavigate()
   const themeMode = useAppSelector(selectThemeMode)
   const appStatus = useAppSelector(selectAppStatus)
-  const isLoggedIn = useAppSelector(selectIsLoggedIn)
+  const isLoggedIn = useAppSelector(authSlice.selectors.selectIsLoggedIn)
 
   const theme = getTheme(themeMode)
 
   const changeModeHandler = () => {
-    dispatch(changeThemeAC(themeMode === "light" ? "dark" : "light"))
+    dispatch(changeTheme({themeMode: themeMode === "light" ? "dark" : "light"}))
   }
 
   const onLogoutHandler = () => {
-    dispatch(logoutTC())
-    console.log('dfsd')
+    dispatch(logout())
   }
 
   return (
@@ -39,11 +38,12 @@ export const Header = () => {
         </IconButton>
         <div>
           {isLoggedIn && <MenuButton onClick={onLogoutHandler}>Logout</MenuButton>}
+          {!isLoggedIn && <MenuButton onClick={() => navigate("/login")}>Login</MenuButton>}
           <MenuButton background={theme.palette.primary.dark}>Faq</MenuButton>
           <Switch color={"default"} onChange={changeModeHandler} />
         </div>
       </Toolbar>
-      {appStatus === 'loading' && <LinearProgress />}
+      {appStatus === "loading" && <LinearProgress />}
     </AppBar>
-)
+  )
 }

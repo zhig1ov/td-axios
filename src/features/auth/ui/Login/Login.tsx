@@ -10,13 +10,12 @@ import { getTheme } from "common/theme"
 import { selectThemeMode } from "../../../../app/appSelectors"
 import { Controller, SubmitHandler, useForm } from "react-hook-form"
 import s from "./Login.module.css"
-import { loginTC } from "features/auth/model/auth-reducer"
-import { selectIsLoggedIn } from "../../model/authSelectors"
+import { authSlice, login } from "features/auth/model/auth-reducer"
 import { useNavigate } from "react-router"
 import { Path } from "common/routing/routing"
 import { useEffect } from "react"
-import * as yup from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from "yup"
+import { yupResolver } from "@hookform/resolvers/yup"
 
 type Inputs = {
   email: string
@@ -29,7 +28,7 @@ export const Login = () => {
   const theme = getTheme(themeMode)
   const {control} = useForm()
   const dispatch = useAppDispatch()
-  const isLoggedIn = useAppSelector(selectIsLoggedIn)
+  const isLoggedIn = useAppSelector(authSlice.selectors.selectIsLoggedIn)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -59,7 +58,7 @@ export const Login = () => {
   } = useForm<Inputs>({ defaultValues: { email: "", password: "", rememberMe: false }, resolver: yupResolver(schema) })
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    dispatch(loginTC(data))
+    dispatch(login(data))
     reset()
   }
 
