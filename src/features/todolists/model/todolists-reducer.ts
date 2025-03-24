@@ -1,5 +1,5 @@
 import { Todolist } from "../api/todolistsApi.types"
-import { todolistsApi } from "../api/todolistsApi"
+import { _todolistsApi } from "../api/_todolistsApi"
 import { RequestStatus, setAppStatus } from "../../../app/app-reducer"
 import { handleServerNetworkError } from "common/utils/handleServerNetworkError"
 import { ResultCode } from "common/enums"
@@ -28,7 +28,7 @@ export const todolistsSlice = createSliceWithThunks({
           try {
             dispatch(setAppStatus({status: 'loading'}))
 
-            const res = await todolistsApi.getTodolists()
+            const res = await _todolistsApi.getTodolists()
             dispatch(setAppStatus({status: 'succeeded' }))
             return {todolists: res.data}
 
@@ -48,7 +48,7 @@ export const todolistsSlice = createSliceWithThunks({
           try {
             dispatch(setAppStatus({status: 'loading'}))
 
-            const res = await todolistsApi.createTodolist(title)
+            const res = await _todolistsApi.createTodolist(title)
 
             if (res.data.resultCode === ResultCode.Success) {
               dispatch(setAppStatus({status: 'succeeded' }))
@@ -73,7 +73,7 @@ export const todolistsSlice = createSliceWithThunks({
           try {
             dispatch(setAppStatus({status: 'loading'}))
 
-            const res = await todolistsApi.updateTodolist(arg)
+            const res = await _todolistsApi.updateTodolist(arg)
 
             if (res.data.resultCode === ResultCode.Success) {
               dispatch(setAppStatus({status: 'succeeded' }))
@@ -101,7 +101,7 @@ export const todolistsSlice = createSliceWithThunks({
           try {
             dispatch(setAppStatus({status: 'loading'}))
 
-            const res = await todolistsApi.deleteTodolist(id)
+            const res = await _todolistsApi.deleteTodolist(id)
 
             if (res.data.resultCode === ResultCode.Success) {
               dispatch(setAppStatus({status: 'succeeded' }))

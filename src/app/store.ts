@@ -3,15 +3,20 @@ import { todolistsReducer, todolistsSlice } from "../features/todolists/model/to
 import { appReducer, appSlice } from "./app-reducer"
 import { authReducer, authSlice } from "../features/auth/model/auth-reducer"
 import { configureStore } from "@reduxjs/toolkit"
+import { baseApi } from "./baseApi"
 
 const rootReducer = {
   [tasksSlice.name]: tasksReducer,
   [todolistsSlice.name]: todolistsReducer,
   [appSlice.name]: appReducer,
   [authSlice.name]: authReducer,
+  [baseApi.reducerPath]: baseApi.reducer
 }
 
-export const store = configureStore({reducer: rootReducer})
+export const store = configureStore({
+  reducer: rootReducer,
+  middleware: getDefaultMiddleware => getDefaultMiddleware().concat(baseApi.middleware)
+})
 
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch

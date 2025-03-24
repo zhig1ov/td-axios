@@ -4,13 +4,13 @@ import React from "react"
 import { useAppSelector } from "common/hooks"
 import { selectTodolists } from "../../model/todolistsSelectors"
 import { Todolist } from "./Todolist/Todolist"
+import { useGetTodolistsQuery } from "../../api/_todolistsApi"
 
 export const Todolists = () => {
-  const todolists = useAppSelector(selectTodolists)
-
+  const {data: todolists } = useGetTodolistsQuery()
   return (
     <>
-      {todolists.map((tl) => {
+      {todolists && todolists.map((tl) => {
         return (
           <Grid key={tl.id}>
             <Paper sx={{ p: "0 20px 20px 20px" }}>

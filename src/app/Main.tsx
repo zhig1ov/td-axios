@@ -7,12 +7,14 @@ import { useAppDispatch } from "common/hooks"
 import { useNavigate } from "react-router"
 import { Path } from "common/routing/routing"
 import { authSlice } from "../features/auth/model/auth-reducer"
-import { addTodolist } from "../features/todolists/model/todolists-reducer"
+import { useAddTodolistMutation } from "../features/todolists/api/_todolistsApi"
 
 export const Main = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const isLoggedIn = authSlice.selectors.selectIsLoggedIn
+
+  const [addTodolist] = useAddTodolistMutation()
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -21,7 +23,7 @@ export const Main = () => {
   }, [isLoggedIn])
 
   const addTodolistHandler = (title: string) => {
-    dispatch(addTodolist(title))
+    addTodolist(title)
   }
 
   return (
